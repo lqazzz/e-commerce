@@ -11,6 +11,7 @@ export declare class AuthController {
             id: number;
             email: string;
             fullName: string;
+            role: import("./entities/customer.entity").CustomerRole;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -21,6 +22,7 @@ export declare class AuthController {
             id: number;
             email: string;
             fullName: string;
+            role: import("./entities/customer.entity").CustomerRole;
             createdAt: Date;
             updatedAt: Date;
         };
@@ -33,6 +35,7 @@ export declare class AuthController {
         id: number;
         email: string;
         fullName: string;
+        role: import("./entities/customer.entity").CustomerRole;
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -44,6 +47,7 @@ export declare class AuthController {
         id: number;
         email: string;
         fullName: string;
+        role: import("./entities/customer.entity").CustomerRole;
         createdAt: Date;
         updatedAt: Date;
     }>;

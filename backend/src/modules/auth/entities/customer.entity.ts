@@ -1,5 +1,7 @@
 import { CreateDateColumn, Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn } from 'typeorm';
 
+export type CustomerRole = 'customer' | 'admin';
+
 @Entity('customers')
 export class Customer {
   @PrimaryGeneratedColumn()
@@ -13,6 +15,9 @@ export class Customer {
 
   @Column()
   passwordHash: string;
+
+  @Column({ type: 'text', default: 'customer' })
+  role: CustomerRole;
 
   @CreateDateColumn()
   createdAt: Date;

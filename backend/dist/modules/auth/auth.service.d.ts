@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { Customer } from './entities/customer.entity';
+import { Customer, CustomerRole } from './entities/customer.entity';
 import { RegisterCustomerDto } from './dto/register-customer.dto';
 import { LoginCustomerDto } from './dto/login-customer.dto';
 import { UpdateCustomerProfileDto } from './dto/update-customer-profile.dto';
@@ -8,6 +8,7 @@ type CustomerProfile = {
     id: number;
     email: string;
     fullName: string;
+    role: CustomerRole;
     createdAt: Date;
     updatedAt: Date;
 };
@@ -25,5 +26,6 @@ export declare class AuthService {
     updateProfile(customerId: number, dto: UpdateCustomerProfileDto): Promise<CustomerProfile>;
     private createAuthResponse;
     private toCustomerProfile;
+    private resolveRoleByEmail;
 }
 export {};

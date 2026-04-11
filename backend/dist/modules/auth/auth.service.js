@@ -72,13 +72,14 @@ let AuthService = class AuthService {
             email,
             fullName: dto.fullName.trim(),
             passwordHash,
+            role: this.resolveRoleByEmail(email),
         });
         const savedCustomer = await this.customerRepository.save(customer);
         return this.createAuthResponse(savedCustomer);
     }
     async login(dto) {
         const email = dto.email.toLowerCase().trim();
-        const customer = await this.customerRepository.findOne({
+        let customer = await this.customerRepository.findOne({
             where: { email },
         });
         if (!customer) {
@@ -87,6 +88,11 @@ let AuthService = class AuthService {
         const isPasswordCorrect = await bcrypt.compare(dto.password, customer.passwordHash);
         if (!isPasswordCorrect) {
             throw new common_1.UnauthorizedException('Invalid email or password');
+        }
+        const nextRole = this.resolveRoleByEmail(customer.email, customer.role);
+        if (nextRole !== customer.role) {
+            customer.role = nextRole;
+            customer = await this.customerRepository.save(customer);
         }
         return this.createAuthResponse(customer);
     }
@@ -133,6 +139,7 @@ let AuthService = class AuthService {
         const payload = {
             sub: customer.id,
             email: customer.email,
+            role: customer.role,
         };
         const accessToken = await this.jwtService.signAsync(payload);
         return {
@@ -145,9 +152,17 @@ let AuthService = class AuthService {
             id: customer.id,
             email: customer.email,
             fullName: customer.fullName,
+            role: customer.role,
             createdAt: customer.createdAt,
             updatedAt: customer.updatedAt,
         };
+    }
+    resolveRoleByEmail(email, fallbackRole = 'customer') {
+        const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase().trim();
+        if (adminEmail && email.toLowerCase().trim() === adminEmail) {
+            return 'admin';
+        }
+        return fallbackRole;
     }
 };
 exports.AuthService = AuthService;

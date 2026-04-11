@@ -8,7 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
-import { Customer } from './entities/customer.entity';
+import { Customer, CustomerRole } from './entities/customer.entity';
 import { RegisterCustomerDto } from './dto/register-customer.dto';
 import { LoginCustomerDto } from './dto/login-customer.dto';
 import { UpdateCustomerProfileDto } from './dto/update-customer-profile.dto';
@@ -17,6 +17,7 @@ type CustomerProfile = {
   id: number;
   email: string;
   fullName: string;
+  role: CustomerRole;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -49,6 +50,7 @@ export class AuthService {
       email,
       fullName: dto.fullName.trim(),
       passwordHash,
+      role: this.resolveRoleByEmail(email),
     });
 
     const savedCustomer = await this.customerRepository.save(customer);
@@ -57,7 +59,7 @@ export class AuthService {
 
   async login(dto: LoginCustomerDto): Promise<AuthResponse> {
     const email = dto.email.toLowerCase().trim();
-    const customer = await this.customerRepository.findOne({
+    let customer = await this.customerRepository.findOne({
       where: { email },
     });
 
@@ -69,6 +71,13 @@ export class AuthService {
 
     if (!isPasswordCorrect) {
       throw new UnauthorizedException('Invalid email or password');
+    }
+
+    const nextRole = this.resolveRoleByEmail(customer.email, customer.role);
+
+    if (nextRole !== customer.role) {
+      customer.role = nextRole;
+      customer = await this.customerRepository.save(customer);
     }
 
     return this.createAuthResponse(customer);
@@ -133,6 +142,7 @@ export class AuthService {
     const payload = {
       sub: customer.id,
       email: customer.email,
+      role: customer.role,
     };
 
     const accessToken = await this.jwtService.signAsync(payload);
@@ -148,8 +158,19 @@ export class AuthService {
       id: customer.id,
       email: customer.email,
       fullName: customer.fullName,
+      role: customer.role,
       createdAt: customer.createdAt,
       updatedAt: customer.updatedAt,
     };
+  }
+
+  private resolveRoleByEmail(email: string, fallbackRole: CustomerRole = 'customer'): CustomerRole {
+    const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase().trim();
+
+    if (adminEmail && email.toLowerCase().trim() === adminEmail) {
+      return 'admin';
+    }
+
+    return fallbackRole;
   }
 }

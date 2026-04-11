@@ -48,10 +48,19 @@ Base URL: `http://localhost:3000`
   - header: `Authorization: Bearer <accessToken>`
   - body: `{ "fullName"?: "string", "email"?: "string" }`
 
+## Admin API
+
+Base URL: `http://localhost:3000`
+
+- `GET /admin/customers`
+  - header: `Authorization: Bearer <accessToken>`
+  - requires customer role = `admin`
+
 Optional environment variables:
 
 - `JWT_SECRET` for signing JWT tokens
 - `FRONTEND_ORIGIN` for CORS (default: `http://localhost:5173`)
+- `ADMIN_EMAIL` to mark a specific account as admin on register/login
 
 ## Project setup
 

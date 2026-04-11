@@ -16,6 +16,7 @@ let Customer = class Customer {
     email;
     fullName;
     passwordHash;
+    role;
     createdAt;
     updatedAt;
 };
@@ -36,6 +37,10 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Customer.prototype, "passwordHash", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', default: 'customer' }),
+    __metadata("design:type", String)
+], Customer.prototype, "role", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
