@@ -1,10 +1,11 @@
 import { NavLink, Outlet } from 'react-router-dom'
 import { navigationLinks } from '../../constants/navigation'
-import { cartSeed } from '../../constants/mockProducts'
 import { useAuth } from '../../context/AuthContext'
+import { useCart } from '../../context/CartContext'
 
 function MainLayout() {
   const { customer, isAuthenticated, logout } = useAuth()
+  const { cartCount } = useCart()
 
   return (
     <div className="app-shell">
@@ -67,7 +68,7 @@ function MainLayout() {
           )}
 
           <NavLink className="button button-primary" to="/cart">
-            Cart ({cartSeed.length})
+            Cart ({cartCount})
           </NavLink>
         </div>
       </header>

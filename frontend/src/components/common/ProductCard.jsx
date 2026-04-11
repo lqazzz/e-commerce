@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom'
 import { formatCurrency } from '../../utils/currency'
+import { useCart } from '../../context/CartContext'
 
 function ProductCard({ product, compact = false }) {
+  const { addToCart, getQuantity } = useCart()
+  const currentQty = getQuantity(product.id)
+
   return (
     <article className={`product-card ${compact ? 'product-card-compact' : ''}`}>
       <div className="product-media-wrap">
@@ -24,9 +28,22 @@ function ProductCard({ product, compact = false }) {
           <span>{product.reviews} reviews</span>
         </div>
 
-        <Link className="button button-secondary" to={`/products/${product.id}`}>
-          View details
-        </Link>
+        <div className="product-actions">
+          <button
+            className="button button-primary"
+            type="button"
+            onClick={() => addToCart(product.id, 1)}
+          >
+            Add to cart
+          </button>
+          <Link className="button button-secondary" to={`/products/${product.id}`}>
+            View details
+          </Link>
+        </div>
+
+        {currentQty > 0 ? (
+          <p className="small-text muted">In cart: {currentQty}</p>
+        ) : null}
       </div>
     </article>
   )

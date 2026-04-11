@@ -1,10 +1,15 @@
-import { Link, useParams } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import ProductCard from '../../components/common/ProductCard'
 import { mockProducts } from '../../constants/mockProducts'
+import { useCart } from '../../context/CartContext'
 import { formatCurrency } from '../../utils/currency'
 
 function ProductDetailPage() {
+  const navigate = useNavigate()
   const { productId } = useParams()
+  const { addToCart, getQuantity } = useCart()
+  const [quantity, setQuantity] = useState(1)
   const product = mockProducts.find((item) => item.id === productId)
 
   if (!product) {
@@ -22,6 +27,25 @@ function ProductDetailPage() {
   const relatedProducts = mockProducts
     .filter((item) => item.category === product.category && item.id !== product.id)
     .slice(0, 2)
+
+  const inCartQty = getQuantity(product.id)
+
+  const increaseQty = () => {
+    setQuantity((prev) => Math.min(99, prev + 1))
+  }
+
+  const decreaseQty = () => {
+    setQuantity((prev) => Math.max(1, prev - 1))
+  }
+
+  const handleAddToCart = () => {
+    addToCart(product.id, quantity)
+  }
+
+  const handleBuyNow = () => {
+    addToCart(product.id, quantity)
+    navigate('/checkout')
+  }
 
   return (
     <div className="page-stack">
@@ -91,17 +115,30 @@ function ProductDetailPage() {
           <p className="muted">Usually delivered in 2-4 business days.</p>
 
           <div className="qty-control">
-            <button type="button">-</button>
-            <span>1</span>
-            <button type="button">+</button>
+            <button type="button" onClick={decreaseQty}>
+              -
+            </button>
+            <span>{quantity}</span>
+            <button type="button" onClick={increaseQty}>
+              +
+            </button>
           </div>
 
-          <button className="button button-primary button-block" type="button">
+          <button
+            className="button button-primary button-block"
+            type="button"
+            onClick={handleAddToCart}
+          >
             Add to cart
           </button>
-          <button className="button button-ghost button-block" type="button">
+          <button
+            className="button button-ghost button-block"
+            type="button"
+            onClick={handleBuyNow}
+          >
             Buy now
           </button>
+          {inCartQty > 0 ? <p className="muted small-text">In cart: {inCartQty}</p> : null}
           <p className="muted small-text">SKU: {product.id}</p>
         </aside>
       </section>

@@ -162,6 +162,12 @@ ul {
   transform: translateY(-1px);
 }
 
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .button-primary {
   color: #ffffff;
   background: linear-gradient(145deg, var(--brand), var(--brand-dark));
@@ -367,6 +373,17 @@ ul {
   min-height: 44px;
 }
 
+.product-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.product-actions .button {
+  width: 100%;
+  text-align: center;
+}
+
 .signal-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -540,6 +557,15 @@ ul {
   gap: 12px;
 }
 
+.cart-empty {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px dashed #d7c6a9;
+  border-radius: 12px;
+  background: #fff9ef;
+}
+
 .cart-line {
   display: grid;
   grid-template-columns: 110px 1fr auto auto;
@@ -556,6 +582,50 @@ ul {
   height: 90px;
   object-fit: cover;
   border-radius: 10px;
+}
+
+.cart-line-remove {
+  margin-top: 8px;
+  border: 0;
+  background: transparent;
+  color: #9f2f24;
+  padding: 0;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1.35fr 0.95fr;
+  gap: 16px;
+}
+
+.checkout-list {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.checkout-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #e2d5c0;
+  border-radius: 12px;
+  background: #fffdf9;
+}
+
+.checkout-empty {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px dashed #d7c6a9;
+  border-radius: 12px;
+  background: #fff9ef;
 }
 
 .coupon-field {
@@ -756,7 +826,8 @@ ul {
   .home-hero,
   .products-layout,
   .product-detail-grid,
-  .cart-layout {
+  .cart-layout,
+  .checkout-layout {
     grid-template-columns: 1fr;
   }
 
