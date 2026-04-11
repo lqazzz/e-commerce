@@ -1,27 +1,37 @@
 import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 
-function LoginPage() {
+function RegisterPage() {
   const navigate = useNavigate()
-  const location = useLocation()
-  const { login } = useAuth()
+  const { register } = useAuth()
 
+  const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const nextPath = location.state?.from || '/profile'
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     setError('')
+
+    if (password !== confirmPassword) {
+      setError('Password confirmation does not match.')
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
-      await login({ email, password })
-      navigate(nextPath, { replace: true })
+      await register({
+        fullName,
+        email,
+        password,
+      })
+
+      navigate('/profile', { replace: true })
     } catch (submitError) {
       setError(submitError.message)
     } finally {
@@ -33,11 +43,21 @@ function LoginPage() {
     <section className="surface-section auth-shell">
       <div className="auth-head">
         <p className="eyebrow">Customer account</p>
-        <h2>Sign in</h2>
-        <p className="muted">Login to view your account and complete checkout.</p>
+        <h2>Create account</h2>
+        <p className="muted">Register to manage orders and checkout faster.</p>
       </div>
 
       <form className="auth-form" onSubmit={handleSubmit}>
+        <label>
+          Full name
+          <input
+            value={fullName}
+            onChange={(event) => setFullName(event.target.value)}
+            placeholder="Your full name"
+            required
+          />
+        </label>
+
         <label>
           Email
           <input
@@ -55,7 +75,19 @@ function LoginPage() {
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            placeholder="Your password"
+            placeholder="Minimum 6 characters"
+            minLength={6}
+            required
+          />
+        </label>
+
+        <label>
+          Confirm password
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(event) => setConfirmPassword(event.target.value)}
+            placeholder="Repeat password"
             minLength={6}
             required
           />
@@ -64,15 +96,15 @@ function LoginPage() {
         {error ? <p className="auth-error">{error}</p> : null}
 
         <button className="button button-primary" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Signing in...' : 'Sign in'}
+          {isSubmitting ? 'Creating account...' : 'Create account'}
         </button>
       </form>
 
       <p className="muted auth-footnote">
-        New customer? <Link to="/register">Create account</Link>
+        Already have an account? <Link to="/login">Sign in</Link>
       </p>
     </section>
   )
 }
 
-export default LoginPage
+export default RegisterPage

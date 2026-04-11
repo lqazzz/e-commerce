@@ -179,6 +179,11 @@ ul {
   background: #222;
 }
 
+.button-danger {
+  color: #ffffff;
+  background: linear-gradient(145deg, #b5362d, #8f231c);
+}
+
 .button-block {
   width: 100%;
   display: inline-flex;
@@ -593,6 +598,79 @@ ul {
   font-weight: 800;
 }
 
+.auth-shell {
+  width: min(560px, 100%);
+  margin-inline: auto;
+}
+
+.auth-head {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.auth-form {
+  display: grid;
+  gap: 12px;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.auth-form input {
+  border: 1px solid #dcc9ac;
+  border-radius: 12px;
+  padding: 11px 13px;
+  font: inherit;
+  background: #fffdf9;
+}
+
+.auth-error {
+  color: #b5362d;
+  font-weight: 700;
+}
+
+.auth-footnote {
+  margin-top: 14px;
+}
+
+.auth-footnote a {
+  color: #7a3f1c;
+  font-weight: 700;
+}
+
+.profile-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.profile-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.profile-info-grid div {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #e1d4bf;
+  background: #fffdf9;
+}
+
+.profile-info-grid dt {
+  margin-bottom: 5px;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
+.profile-info-grid dd {
+  margin: 0;
+  font-weight: 700;
+}
+
 .app-footer {
   display: flex;
   justify-content: space-between;
@@ -690,5 +768,9 @@ ul {
   .section-head {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .profile-info-grid {
+    grid-template-columns: 1fr;
   }
 }

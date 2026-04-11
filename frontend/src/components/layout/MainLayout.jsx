@@ -1,8 +1,11 @@
 import { NavLink, Outlet } from 'react-router-dom'
 import { navigationLinks } from '../../constants/navigation'
 import { cartSeed } from '../../constants/mockProducts'
+import { useAuth } from '../../context/AuthContext'
 
 function MainLayout() {
+  const { customer, isAuthenticated, logout } = useAuth()
+
   return (
     <div className="app-shell">
       <div className="app-topbar">
@@ -42,6 +45,27 @@ function MainLayout() {
           <button className="button button-ghost" type="button">
             Search
           </button>
+
+          {isAuthenticated ? (
+            <>
+              <NavLink className="button button-ghost" to="/profile">
+                {customer?.fullName?.split(' ')[0] || 'Account'}
+              </NavLink>
+              <button className="button button-danger" type="button" onClick={logout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <NavLink className="button button-ghost" to="/login">
+                Login
+              </NavLink>
+              <NavLink className="button button-secondary" to="/register">
+                Register
+              </NavLink>
+            </>
+          )}
+
           <NavLink className="button button-primary" to="/cart">
             Cart ({cartSeed.length})
           </NavLink>

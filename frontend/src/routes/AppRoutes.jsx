@@ -6,7 +6,9 @@ import ProductDetailPage from '../pages/product-detail/ProductDetailPage'
 import CartPage from '../pages/cart/CartPage'
 import CheckoutPage from '../pages/checkout/CheckoutPage'
 import LoginPage from '../pages/auth/LoginPage'
+import RegisterPage from '../pages/auth/RegisterPage'
 import ProfilePage from '../pages/profile/ProfilePage'
+import ProtectedRoute from '../components/common/ProtectedRoute'
 
 function AppRoutes() {
   return (
@@ -16,12 +18,27 @@ function AppRoutes() {
         <Route path="products" element={<ProductsPage />} />
         <Route path="products/:productId" element={<ProductDetailPage />} />
         <Route path="cart" element={<CartPage />} />
-        <Route path="checkout" element={<CheckoutPage />} />
+        <Route
+          path="checkout"
+          element={
+            <ProtectedRoute>
+              <CheckoutPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="login" element={<LoginPage />} />
-        <Route path="profile" element={<ProfilePage />} />
+        <Route path="register" element={<RegisterPage />} />
+        <Route
+          path="profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    </Routes>                              
   )
 }
 

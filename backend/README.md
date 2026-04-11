@@ -25,6 +25,31 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Database
+
+This backend is configured to use SQLite with TypeORM.
+
+- Database file: `dev.sqlite`
+- Connection setup: `src/app.module.ts`
+
+The SQLite file is created automatically when you run the app.
+
+## Authentication API
+
+Base URL: `http://localhost:3000`
+
+- `POST /auth/register`
+  - body: `{ "fullName": "string", "email": "string", "password": "string" }`
+- `POST /auth/login`
+  - body: `{ "email": "string", "password": "string" }`
+- `GET /auth/me`
+  - header: `Authorization: Bearer <accessToken>`
+
+Optional environment variables:
+
+- `JWT_SECRET` for signing JWT tokens
+- `FRONTEND_ORIGIN` for CORS (default: `http://localhost:5173`)
+
 ## Project setup
 
 ```bash
