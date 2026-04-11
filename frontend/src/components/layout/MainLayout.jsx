@@ -10,6 +10,7 @@ function MainLayout() {
     ? [
         ...navigationLinks,
         { to: '/admin/customers', label: 'Customers' },
+        { to: '/admin/products', label: 'Products' },
         { to: '/admin/products/create', label: 'Create Product' },
       ]
     : navigationLinks

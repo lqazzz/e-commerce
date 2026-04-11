@@ -1,20 +1,11 @@
 import { IsOptional } from 'class-validator';
 
-export class CreateProductDto {
+export class UpdateAdminProductDto {
   @IsOptional()
   name?: string;
 
   @IsOptional()
-  productName?: string;
-
-  @IsOptional()
-  title?: string;
-
-  @IsOptional()
   category?: string;
-
-  @IsOptional()
-  categoryName?: string;
 
   @IsOptional()
   price?: number | string;

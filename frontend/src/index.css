@@ -775,6 +775,11 @@ ul {
   gap: 12px;
 }
 
+.admin-products-page {
+  display: grid;
+  gap: 12px;
+}
+
 .admin-create-product-page {
   display: grid;
   gap: 12px;
@@ -833,6 +838,32 @@ ul {
 .admin-table thead th {
   background: #faf1e2;
   font-size: 0.88rem;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.button-sm {
+  padding: 7px 12px;
+  font-size: 0.82rem;
+}
+
+.stock-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #7a3125;
+  background: #f8dfd8;
+}
+
+.stock-badge-on {
+  color: #1f6b3f;
+  background: #ddf3e6;
 }
 
 .app-footer {

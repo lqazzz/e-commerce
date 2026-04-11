@@ -11,6 +11,7 @@ import ProfilePage from '../pages/profile/ProfilePage'
 import ProtectedRoute from '../components/common/ProtectedRoute'
 import AdminCustomersPage from '../pages/admin/AdminCustomersPage'
 import AdminCreateProductPage from '../pages/admin/AdminCreateProductPage'
+import AdminProductsPage from '../pages/admin/AdminProductsPage'
 
 function AppRoutes() {
   return (
@@ -51,6 +52,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute requireAdmin>
               <AdminCreateProductPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="admin/products"
+          element={
+            <ProtectedRoute requireAdmin>
+              <AdminProductsPage />
             </ProtectedRoute>
           }
         />

@@ -76,3 +76,31 @@ export function createAdminProduct(token, payload) {
     body: JSON.stringify(payload),
   })
 }
+
+export function getAdminProductList(token) {
+  return request('/admin/products', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+}
+
+export function updateAdminProduct(token, productId, payload) {
+  return request(`/admin/products/${productId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  })
+}
+
+export function deleteAdminProduct(token, productId) {
+  return request(`/admin/products/${productId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+}

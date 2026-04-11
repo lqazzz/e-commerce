@@ -59,6 +59,16 @@ Base URL: `http://localhost:3000`
   - header: `Authorization: Bearer <accessToken>`
   - requires customer role = `admin`
   - body: `{ "name": "string", "category": "string", "price": number, "originalPrice"?: number, "description": "string", "image": "https://...", "inStock"?: boolean }`
+- `GET /admin/products`
+  - header: `Authorization: Bearer <accessToken>`
+  - requires customer role = `admin`
+- `PATCH /admin/products/:id`
+  - header: `Authorization: Bearer <accessToken>`
+  - requires customer role = `admin`
+  - body: any subset of `{ "name", "category", "price", "originalPrice", "description", "image", "inStock" }`
+- `DELETE /admin/products/:id`
+  - header: `Authorization: Bearer <accessToken>`
+  - requires customer role = `admin`
 
 ## Product API
 

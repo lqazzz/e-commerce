@@ -17,7 +17,7 @@ const common_1 = require("@nestjs/common");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const admin_guard_1 = require("../auth/guards/admin.guard");
 const admin_service_1 = require("./admin.service");
-const create_product_dto_1 = require("../products/dto/create-product.dto");
+const update_admin_product_dto_1 = require("../products/dto/update-admin-product.dto");
 let AdminController = class AdminController {
     adminService;
     constructor(adminService) {
@@ -26,8 +26,17 @@ let AdminController = class AdminController {
     getCustomers() {
         return this.adminService.getCustomerList();
     }
-    createProduct(dto) {
-        return this.adminService.createProduct(dto);
+    createProduct(payload) {
+        return this.adminService.createProduct(payload);
+    }
+    getProducts() {
+        return this.adminService.getProductList();
+    }
+    updateProduct(id, dto) {
+        return this.adminService.updateProduct(id, dto);
+    }
+    deleteProduct(id) {
+        return this.adminService.deleteProduct(id);
     }
 };
 exports.AdminController = AdminController;
@@ -41,9 +50,30 @@ __decorate([
     (0, common_1.Post)('products'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_product_dto_1.CreateProductDto]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AdminController.prototype, "createProduct", null);
+__decorate([
+    (0, common_1.Get)('products'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "getProducts", null);
+__decorate([
+    (0, common_1.Patch)('products/:id'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, update_admin_product_dto_1.UpdateAdminProductDto]),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "updateProduct", null);
+__decorate([
+    (0, common_1.Delete)('products/:id'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "deleteProduct", null);
 exports.AdminController = AdminController = __decorate([
     (0, common_1.Controller)('admin'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_guard_1.AdminGuard),

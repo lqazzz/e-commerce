@@ -9,59 +9,44 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateProductDto = void 0;
+exports.UpdateAdminProductDto = void 0;
 const class_validator_1 = require("class-validator");
-class CreateProductDto {
+class UpdateAdminProductDto {
     name;
-    productName;
-    title;
     category;
-    categoryName;
     price;
     originalPrice;
     description;
     image;
     inStock;
 }
-exports.CreateProductDto = CreateProductDto;
+exports.UpdateAdminProductDto = UpdateAdminProductDto;
 __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], CreateProductDto.prototype, "name", void 0);
+], UpdateAdminProductDto.prototype, "name", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], CreateProductDto.prototype, "productName", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateProductDto.prototype, "title", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateProductDto.prototype, "category", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateProductDto.prototype, "categoryName", void 0);
+], UpdateAdminProductDto.prototype, "category", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Object)
-], CreateProductDto.prototype, "price", void 0);
+], UpdateAdminProductDto.prototype, "price", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Object)
-], CreateProductDto.prototype, "originalPrice", void 0);
+], UpdateAdminProductDto.prototype, "originalPrice", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], CreateProductDto.prototype, "description", void 0);
+], UpdateAdminProductDto.prototype, "description", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], CreateProductDto.prototype, "image", void 0);
+], UpdateAdminProductDto.prototype, "image", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Object)
-], CreateProductDto.prototype, "inStock", void 0);
-//# sourceMappingURL=create-product.dto.js.map
+], UpdateAdminProductDto.prototype, "inStock", void 0);
+//# sourceMappingURL=update-admin-product.dto.js.map

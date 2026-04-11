@@ -1,9 +1,6 @@
-export declare class CreateProductDto {
+export declare class UpdateAdminProductDto {
     name?: string;
-    productName?: string;
-    title?: string;
     category?: string;
-    categoryName?: string;
     price?: number | string;
     originalPrice?: number | string;
     description?: string;

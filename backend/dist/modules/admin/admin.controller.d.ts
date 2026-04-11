@@ -1,5 +1,5 @@
 import { AdminService } from './admin.service';
-import { CreateProductDto } from '../products/dto/create-product.dto';
+import { UpdateAdminProductDto } from '../products/dto/update-admin-product.dto';
 export declare class AdminController {
     private readonly adminService;
     constructor(adminService: AdminService);
@@ -11,7 +11,7 @@ export declare class AdminController {
         createdAt: Date;
         updatedAt: Date;
     }[]>;
-    createProduct(dto: CreateProductDto): Promise<{
+    createProduct(payload: Record<string, unknown>): Promise<{
         id: number;
         name: string;
         category: string;
@@ -22,5 +22,32 @@ export declare class AdminController {
         inStock: boolean;
         createdAt: Date;
         updatedAt: Date;
+    }>;
+    getProducts(): Promise<{
+        id: number;
+        name: string;
+        category: string;
+        price: number;
+        originalPrice: number | null;
+        description: string;
+        image: string;
+        inStock: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+    }[]>;
+    updateProduct(id: number, dto: UpdateAdminProductDto): Promise<{
+        id: number;
+        name: string;
+        category: string;
+        price: number;
+        originalPrice: number | null;
+        description: string;
+        image: string;
+        inStock: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+    deleteProduct(id: number): Promise<{
+        deleted: boolean;
     }>;
 }

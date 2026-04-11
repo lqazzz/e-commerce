@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { createAdminProduct } from '../../services/authApi'
 import { useAuth } from '../../context/AuthContext'
 
@@ -32,17 +33,28 @@ function AdminCreateProductPage() {
     setError('')
     setSuccessMessage('')
 
+    const formData = new FormData(event.currentTarget)
+    const formName = String(formData.get('name') ?? '').trim()
+    const formCategory = String(formData.get('category') ?? '').trim()
+    const formPrice = String(formData.get('price') ?? '').trim()
+    const formOriginalPrice = String(formData.get('originalPrice') ?? '').trim()
+    const formImage = String(formData.get('image') ?? '').trim()
+    const formDescription = String(formData.get('description') ?? '').trim()
+    const formInStock = formData.get('inStock') === 'on'
+
     const payload = {
-      name: name.trim(),
-      category: category.trim(),
-      price: Number(price),
-      description: description.trim(),
-      image: image.trim(),
-      inStock,
+      name: formName,
+      productName: formName,
+      category: formCategory,
+      categoryName: formCategory,
+      price: formPrice,
+      description: formDescription,
+      image: formImage,
+      inStock: formInStock,
     }
 
-    if (originalPrice.trim() !== '') {
-      payload.originalPrice = Number(originalPrice)
+    if (formOriginalPrice !== '') {
+      payload.originalPrice = formOriginalPrice
     }
 
     setIsSubmitting(true)
@@ -64,10 +76,17 @@ function AdminCreateProductPage() {
       <h2>Create product</h2>
       <p className="muted">Add a new item so it can be sold in the store.</p>
 
+      <div className="action-row">
+        <Link className="button button-ghost" to="/admin/products">
+          Back to product list
+        </Link>
+      </div>
+
       <form className="admin-form" onSubmit={handleSubmit}>
         <label>
           Product name
           <input
+            name="name"
             value={name}
             onChange={(event) => setName(event.target.value)}
             placeholder="Urban Commuter Backpack"
@@ -78,6 +97,7 @@ function AdminCreateProductPage() {
         <label>
           Category
           <input
+            name="category"
             value={category}
             onChange={(event) => setCategory(event.target.value)}
             placeholder="Accessories"
@@ -89,9 +109,8 @@ function AdminCreateProductPage() {
           <label>
             Price
             <input
-              type="number"
-              min="0"
-              step="0.01"
+              name="price"
+              type="text"
               value={price}
               onChange={(event) => setPrice(event.target.value)}
               placeholder="99"
@@ -102,9 +121,8 @@ function AdminCreateProductPage() {
           <label>
             Original price (optional)
             <input
-              type="number"
-              min="0"
-              step="0.01"
+              name="originalPrice"
+              type="text"
               value={originalPrice}
               onChange={(event) => setOriginalPrice(event.target.value)}
               placeholder="129"
@@ -115,27 +133,28 @@ function AdminCreateProductPage() {
         <label>
           Image URL
           <input
-            type="url"
+            name="image"
+            type="text"
             value={image}
             onChange={(event) => setImage(event.target.value)}
-            placeholder="https://images.unsplash.com/..."
-            required
+            placeholder="Image URL or any image path"
           />
         </label>
 
         <label>
           Description
           <textarea
+            name="description"
             value={description}
             onChange={(event) => setDescription(event.target.value)}
             placeholder="Write a short product description"
             rows={4}
-            required
           />
         </label>
 
         <label className="filter-row">
           <input
+            name="inStock"
             type="checkbox"
             checked={inStock}
             onChange={(event) => setInStock(event.target.checked)}
