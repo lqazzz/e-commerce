@@ -1,5 +1,10 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { getCurrentCustomer, loginCustomer, registerCustomer } from '../services/authApi'
+import {
+  getCurrentCustomer,
+  loginCustomer,
+  registerCustomer,
+  updateCurrentCustomer,
+} from '../services/authApi'
 
 const AUTH_STORAGE_KEY = 'ecommerce_auth'
 
@@ -83,6 +88,23 @@ export function AuthProvider({ children }) {
     return profile
   }
 
+  const updateProfile = async (payload) => {
+    if (!token) {
+      throw new Error('Not authenticated')
+    }
+
+    const profile = await updateCurrentCustomer(token, payload)
+    setCustomer(profile)
+
+    const nextAuth = {
+      accessToken: token,
+      customer: profile,
+    }
+
+    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(nextAuth))
+    return profile
+  }
+
   const logout = () => {
     localStorage.removeItem(AUTH_STORAGE_KEY)
     setToken(null)
@@ -98,6 +120,7 @@ export function AuthProvider({ children }) {
       login,
       register,
       refreshProfile,
+      updateProfile,
       logout,
     }),
     [token, customer, isLoading],

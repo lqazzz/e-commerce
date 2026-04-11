@@ -1,11 +1,23 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 
 function ProfilePage() {
   const navigate = useNavigate()
-  const { customer, logout, refreshProfile } = useAuth()
+  const { customer, logout, refreshProfile, updateProfile } = useAuth()
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [fullName, setFullName] = useState(customer?.fullName ?? '')
+  const [email, setEmail] = useState(customer?.email ?? '')
+  const [isSaving, setIsSaving] = useState(false)
+  const [saveMessage, setSaveMessage] = useState('')
+  const [saveError, setSaveError] = useState('')
+
+  useEffect(() => {
+    setFullName(customer?.fullName ?? '')
+    setEmail(customer?.email ?? '')
+  }, [customer])
+
+  const hasChanges = fullName.trim() !== (customer?.fullName ?? '') || email.trim() !== (customer?.email ?? '')
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
@@ -20,6 +32,34 @@ function ProfilePage() {
   const handleLogout = () => {
     logout()
     navigate('/login', { replace: true })
+  }
+
+  const handleProfileSubmit = async (event) => {
+    event.preventDefault()
+    setSaveMessage('')
+    setSaveError('')
+
+    if (!hasChanges) {
+      setSaveMessage('No changes to save.')
+      return
+    }
+
+    setIsSaving(true)
+
+    try {
+      const updatedProfile = await updateProfile({
+        fullName: fullName.trim(),
+        email: email.trim(),
+      })
+
+      setFullName(updatedProfile.fullName)
+      setEmail(updatedProfile.email)
+      setSaveMessage('Profile updated successfully.')
+    } catch (submitError) {
+      setSaveError(submitError.message)
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   return (
@@ -47,6 +87,38 @@ function ProfilePage() {
             <dd>{customer?.updatedAt ? new Date(customer.updatedAt).toLocaleString() : '-'}</dd>
           </div>
         </dl>
+
+        <form className="profile-form" onSubmit={handleProfileSubmit}>
+          <h3>Update account info</h3>
+
+          <label>
+            Full name
+            <input
+              value={fullName}
+              onChange={(event) => setFullName(event.target.value)}
+              placeholder="Your full name"
+              required
+            />
+          </label>
+
+          <label>
+            Email
+            <input
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="you@example.com"
+              required
+            />
+          </label>
+
+          {saveError ? <p className="auth-error">{saveError}</p> : null}
+          {saveMessage ? <p className="profile-success">{saveMessage}</p> : null}
+
+          <button className="button button-secondary" type="submit" disabled={isSaving}>
+            {isSaving ? 'Saving...' : 'Save changes'}
+          </button>
+        </form>
 
         <div className="action-row">
           <button className="button button-ghost" type="button" onClick={handleRefresh}>

@@ -44,6 +44,9 @@ Base URL: `http://localhost:3000`
   - body: `{ "email": "string", "password": "string" }`
 - `GET /auth/me`
   - header: `Authorization: Bearer <accessToken>`
+- `PATCH /auth/me`
+  - header: `Authorization: Bearer <accessToken>`
+  - body: `{ "fullName"?: "string", "email"?: "string" }`
 
 Optional environment variables:
 

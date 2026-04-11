@@ -18,6 +18,7 @@ const auth_service_1 = require("./auth.service");
 const register_customer_dto_1 = require("./dto/register-customer.dto");
 const login_customer_dto_1 = require("./dto/login-customer.dto");
 const jwt_auth_guard_1 = require("./guards/jwt-auth.guard");
+const update_customer_profile_dto_1 = require("./dto/update-customer-profile.dto");
 let AuthController = class AuthController {
     authService;
     constructor(authService) {
@@ -31,6 +32,9 @@ let AuthController = class AuthController {
     }
     me(request) {
         return this.authService.getProfile(request.user.sub);
+    }
+    updateProfile(request, dto) {
+        return this.authService.updateProfile(request.user.sub, dto);
     }
 };
 exports.AuthController = AuthController;
@@ -56,6 +60,15 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "me", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Patch)('me'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, update_customer_profile_dto_1.UpdateCustomerProfileDto]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "updateProfile", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

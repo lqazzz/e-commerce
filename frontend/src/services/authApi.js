@@ -47,3 +47,13 @@ export function getCurrentCustomer(token) {
     },
   })
 }
+
+export function updateCurrentCustomer(token, payload) {
+  return request('/auth/me', {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  })
+}

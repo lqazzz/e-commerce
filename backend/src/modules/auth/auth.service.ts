@@ -11,6 +11,7 @@ import * as bcrypt from 'bcryptjs';
 import { Customer } from './entities/customer.entity';
 import { RegisterCustomerDto } from './dto/register-customer.dto';
 import { LoginCustomerDto } from './dto/login-customer.dto';
+import { UpdateCustomerProfileDto } from './dto/update-customer-profile.dto';
 
 type CustomerProfile = {
   id: number;
@@ -83,6 +84,49 @@ export class AuthService {
     }
 
     return this.toCustomerProfile(customer);
+  }
+
+  async updateProfile(
+    customerId: number,
+    dto: UpdateCustomerProfileDto,
+  ): Promise<CustomerProfile> {
+    const customer = await this.customerRepository.findOne({
+      where: { id: customerId },
+    });
+
+    if (!customer) {
+      throw new NotFoundException('Customer not found');
+    }
+
+    const hasNameUpdate = typeof dto.fullName === 'string';
+    const hasEmailUpdate = typeof dto.email === 'string';
+
+    if (!hasNameUpdate && !hasEmailUpdate) {
+      throw new BadRequestException('No profile fields to update');
+    }
+
+    if (hasNameUpdate) {
+      customer.fullName = dto.fullName!.trim();
+    }
+
+    if (hasEmailUpdate) {
+      const nextEmail = dto.email!.toLowerCase().trim();
+
+      if (nextEmail !== customer.email) {
+        const existingCustomer = await this.customerRepository.findOne({
+          where: { email: nextEmail },
+        });
+
+        if (existingCustomer && existingCustomer.id !== customer.id) {
+          throw new BadRequestException('Email already exists');
+        }
+      }
+
+      customer.email = nextEmail;
+    }
+
+    const updatedCustomer = await this.customerRepository.save(customer);
+    return this.toCustomerProfile(updatedCustomer);
   }
 
   private async createAuthResponse(customer: Customer): Promise<AuthResponse> {

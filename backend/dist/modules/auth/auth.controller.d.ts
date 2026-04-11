@@ -1,6 +1,7 @@
 import { AuthService } from './auth.service';
 import { RegisterCustomerDto } from './dto/register-customer.dto';
 import { LoginCustomerDto } from './dto/login-customer.dto';
+import { UpdateCustomerProfileDto } from './dto/update-customer-profile.dto';
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
@@ -29,6 +30,17 @@ export declare class AuthController {
             sub: number;
         };
     }): Promise<{
+        id: number;
+        email: string;
+        fullName: string;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+    updateProfile(request: {
+        user: {
+            sub: number;
+        };
+    }, dto: UpdateCustomerProfileDto): Promise<{
         id: number;
         email: string;
         fullName: string;
