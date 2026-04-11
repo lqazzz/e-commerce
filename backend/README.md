@@ -55,6 +55,17 @@ Base URL: `http://localhost:3000`
 - `GET /admin/customers`
   - header: `Authorization: Bearer <accessToken>`
   - requires customer role = `admin`
+- `POST /admin/products`
+  - header: `Authorization: Bearer <accessToken>`
+  - requires customer role = `admin`
+  - body: `{ "name": "string", "category": "string", "price": number, "originalPrice"?: number, "description": "string", "image": "https://...", "inStock"?: boolean }`
+
+## Product API
+
+Base URL: `http://localhost:3000`
+
+- `GET /products`
+- `GET /products/:id`
 
 Optional environment variables:
 

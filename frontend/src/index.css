@@ -770,6 +770,71 @@ ul {
   font-weight: 700;
 }
 
+.admin-customers-page {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-create-product-page {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-form {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-form label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.admin-form input,
+.admin-form textarea {
+  border: 1px solid #dcc9ac;
+  border-radius: 12px;
+  padding: 11px 13px;
+  font: inherit;
+  background: #fffdf9;
+}
+
+.admin-form textarea {
+  resize: vertical;
+}
+
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #e2d5c0;
+  border-radius: 12px;
+  background: #fffdf9;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 680px;
+}
+
+.admin-table th,
+.admin-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #ece1cf;
+}
+
+.admin-table thead th {
+  background: #faf1e2;
+  font-size: 0.88rem;
+}
+
 .app-footer {
   display: flex;
   justify-content: space-between;
@@ -871,6 +936,10 @@ ul {
   }
 
   .profile-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-form-grid {
     grid-template-columns: 1fr;
   }
 }

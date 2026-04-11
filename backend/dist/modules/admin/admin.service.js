@@ -17,10 +17,13 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const customer_entity_1 = require("../auth/entities/customer.entity");
+const product_entity_1 = require("../products/entities/product.entity");
 let AdminService = class AdminService {
     customerRepository;
-    constructor(customerRepository) {
+    productRepository;
+    constructor(customerRepository, productRepository) {
         this.customerRepository = customerRepository;
+        this.productRepository = productRepository;
     }
     async getCustomerList() {
         const customers = await this.customerRepository.find({
@@ -35,11 +38,37 @@ let AdminService = class AdminService {
             updatedAt: customer.updatedAt,
         }));
     }
+    async createProduct(dto) {
+        const product = this.productRepository.create({
+            name: dto.name.trim(),
+            category: dto.category.trim(),
+            price: dto.price,
+            originalPrice: dto.originalPrice ?? null,
+            description: dto.description.trim(),
+            image: dto.image.trim(),
+            inStock: dto.inStock ?? true,
+        });
+        const savedProduct = await this.productRepository.save(product);
+        return {
+            id: savedProduct.id,
+            name: savedProduct.name,
+            category: savedProduct.category,
+            price: savedProduct.price,
+            originalPrice: savedProduct.originalPrice,
+            description: savedProduct.description,
+            image: savedProduct.image,
+            inStock: savedProduct.inStock,
+            createdAt: savedProduct.createdAt,
+            updatedAt: savedProduct.updatedAt,
+        };
+    }
 };
 exports.AdminService = AdminService;
 exports.AdminService = AdminService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(customer_entity_1.Customer)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(product_entity_1.Product)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], AdminService);
 //# sourceMappingURL=admin.service.js.map

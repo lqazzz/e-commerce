@@ -5,20 +5,51 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminGuard = void 0;
 const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
+const typeorm_2 = require("typeorm");
+const customer_entity_1 = require("../entities/customer.entity");
 let AdminGuard = class AdminGuard {
-    canActivate(context) {
-        const request = context.switchToHttp().getRequest();
-        if (request.user?.role !== 'admin') {
+    customerRepository;
+    constructor(customerRepository) {
+        this.customerRepository = customerRepository;
+    }
+    async canActivate(context) {
+        const request = context
+            .switchToHttp()
+            .getRequest();
+        if (request.user?.role === 'admin') {
+            return true;
+        }
+        const customerId = request.user?.sub;
+        if (!customerId) {
             throw new common_1.ForbiddenException('Admin access required');
+        }
+        const customer = await this.customerRepository.findOne({
+            where: { id: customerId },
+            select: ['id', 'role'],
+        });
+        if (!customer || customer.role !== 'admin') {
+            throw new common_1.ForbiddenException('Admin access required');
+        }
+        if (request.user) {
+            request.user.role = 'admin';
         }
         return true;
     }
 };
 exports.AdminGuard = AdminGuard;
 exports.AdminGuard = AdminGuard = __decorate([
-    (0, common_1.Injectable)()
+    (0, common_1.Injectable)(),
+    __param(0, (0, typeorm_1.InjectRepository)(customer_entity_1.Customer)),
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], AdminGuard);
 //# sourceMappingURL=admin.guard.js.map

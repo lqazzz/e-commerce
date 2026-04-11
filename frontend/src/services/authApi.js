@@ -57,3 +57,22 @@ export function updateCurrentCustomer(token, payload) {
     body: JSON.stringify(payload),
   })
 }
+
+export function getAdminCustomerList(token) {
+  return request('/admin/customers', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+}
+
+export function createAdminProduct(token, payload) {
+  return request('/admin/products', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  })
+}

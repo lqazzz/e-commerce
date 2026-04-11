@@ -9,6 +9,8 @@ import LoginPage from '../pages/auth/LoginPage'
 import RegisterPage from '../pages/auth/RegisterPage'
 import ProfilePage from '../pages/profile/ProfilePage'
 import ProtectedRoute from '../components/common/ProtectedRoute'
+import AdminCustomersPage from '../pages/admin/AdminCustomersPage'
+import AdminCreateProductPage from '../pages/admin/AdminCreateProductPage'
 
 function AppRoutes() {
   return (
@@ -33,6 +35,22 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="admin/customers"
+          element={
+            <ProtectedRoute requireAdmin>
+              <AdminCustomersPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="admin/products/create"
+          element={
+            <ProtectedRoute requireAdmin>
+              <AdminCreateProductPage />
             </ProtectedRoute>
           }
         />

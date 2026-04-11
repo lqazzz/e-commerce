@@ -1,15 +1,16 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { mockProducts } from '../../constants/mockProducts'
 import { useCart } from '../../context/CartContext'
+import { useProductsCatalog } from '../../hooks/useProductsCatalog'
 import { formatCurrency } from '../../utils/currency'
 
 function CheckoutPage() {
   const navigate = useNavigate()
   const { items, clearCart } = useCart()
+  const { products, isLoading, error } = useProductsCatalog()
 
   const cartLines = items
     .map((line) => {
-      const product = mockProducts.find((item) => item.id === line.productId)
+      const product = products.find((item) => item.id === line.productId)
 
       if (!product) {
         return null
@@ -45,6 +46,9 @@ function CheckoutPage() {
         <p className="muted">
           Confirm your cart and place order. This demo will only show a success popup.
         </p>
+
+        {isLoading ? <p className="muted">Loading checkout products...</p> : null}
+        {error ? <p className="auth-error">{error}</p> : null}
 
         {cartLines.length > 0 ? (
           <div className="checkout-list">

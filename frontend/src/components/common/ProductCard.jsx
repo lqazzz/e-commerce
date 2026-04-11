@@ -5,12 +5,16 @@ import { useCart } from '../../context/CartContext'
 function ProductCard({ product, compact = false }) {
   const { addToCart, getQuantity } = useCart()
   const currentQty = getQuantity(product.id)
+  const badge = product.badge || (product.inStock ? 'In Stock' : 'Sold Out')
+  const hasDiscount = Number(product.originalPrice) > Number(product.price)
+  const rating = product.rating ?? 4.5
+  const reviews = product.reviews ?? 0
 
   return (
     <article className={`product-card ${compact ? 'product-card-compact' : ''}`}>
       <div className="product-media-wrap">
         <img className="product-media" src={product.image} alt={product.name} />
-        <span className="product-badge">{product.badge}</span>
+        <span className="product-badge">{badge}</span>
       </div>
 
       <div className="product-body">
@@ -20,12 +24,12 @@ function ProductCard({ product, compact = false }) {
 
         <div className="product-price-row">
           <strong>{formatCurrency(product.price)}</strong>
-          <span>{formatCurrency(product.originalPrice)}</span>
+          {hasDiscount ? <span>{formatCurrency(product.originalPrice)}</span> : null}
         </div>
 
         <div className="product-rating-row">
-          <span>{product.rating} / 5</span>
-          <span>{product.reviews} reviews</span>
+          <span>{rating} / 5</span>
+          <span>{reviews} reviews</span>
         </div>
 
         <div className="product-actions">

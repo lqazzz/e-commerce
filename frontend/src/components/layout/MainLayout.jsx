@@ -4,8 +4,15 @@ import { useAuth } from '../../context/AuthContext'
 import { useCart } from '../../context/CartContext'
 
 function MainLayout() {
-  const { customer, isAuthenticated, logout } = useAuth()
+  const { customer, isAuthenticated, isAdmin, logout } = useAuth()
   const { cartCount } = useCart()
+  const navItems = isAdmin
+    ? [
+        ...navigationLinks,
+        { to: '/admin/customers', label: 'Customers' },
+        { to: '/admin/products/create', label: 'Create Product' },
+      ]
+    : navigationLinks
 
   return (
     <div className="app-shell">
@@ -27,7 +34,7 @@ function MainLayout() {
 
         <nav>
           <ul className="nav-list">
-            {navigationLinks.map((item) => (
+            {navItems.map((item) => (
               <li key={item.to}>
                 <NavLink
                   to={item.to}

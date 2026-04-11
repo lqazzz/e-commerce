@@ -1,10 +1,6 @@
 import { Link } from 'react-router-dom'
 import ProductCard from '../../components/common/ProductCard'
-import { featuredProductIds, mockProducts } from '../../constants/mockProducts'
-
-const featuredProducts = featuredProductIds
-  .map((id) => mockProducts.find((item) => item.id === id))
-  .filter(Boolean)
+import { useProductsCatalog } from '../../hooks/useProductsCatalog'
 
 const trustSignals = [
   { title: '48h dispatch', text: 'Orders before 3pm ship same business day.' },
@@ -13,6 +9,9 @@ const trustSignals = [
 ]
 
 function HomePage() {
+  const { products, isLoading, error } = useProductsCatalog()
+  const featuredProducts = products.slice(0, 4)
+
   return (
     <div className="page-stack">
       <section className="home-hero">
@@ -50,11 +49,15 @@ function HomePage() {
           <h2>Featured picks</h2>
           <Link to="/products">See all products</Link>
         </div>
-        <div className="product-grid">
-          {featuredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} compact />
-          ))}
-        </div>
+        {isLoading ? <p className="muted">Loading products...</p> : null}
+        {error ? <p className="auth-error">{error}</p> : null}
+        {!isLoading && !error ? (
+          <div className="product-grid">
+            {featuredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} compact />
+            ))}
+          </div>
+        ) : null}
       </section>
 
       <section className="surface-section reveal-up delay-3">

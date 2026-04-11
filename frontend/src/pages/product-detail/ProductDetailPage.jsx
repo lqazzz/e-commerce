@@ -1,16 +1,35 @@
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import ProductCard from '../../components/common/ProductCard'
-import { mockProducts } from '../../constants/mockProducts'
 import { useCart } from '../../context/CartContext'
+import { useProductsCatalog } from '../../hooks/useProductsCatalog'
 import { formatCurrency } from '../../utils/currency'
 
 function ProductDetailPage() {
   const navigate = useNavigate()
   const { productId } = useParams()
   const { addToCart, getQuantity } = useCart()
+  const { products, isLoading, error } = useProductsCatalog()
   const [quantity, setQuantity] = useState(1)
-  const product = mockProducts.find((item) => item.id === productId)
+  const product = products.find((item) => item.id === productId)
+
+  if (isLoading) {
+    return (
+      <section className="surface-section">
+        <h2>Loading product</h2>
+        <p className="muted">Please wait while we fetch product details.</p>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className="surface-section">
+        <h2>Cannot load product</h2>
+        <p className="auth-error">{error}</p>
+      </section>
+    )
+  }
 
   if (!product) {
     return (
@@ -24,7 +43,7 @@ function ProductDetailPage() {
     )
   }
 
-  const relatedProducts = mockProducts
+  const relatedProducts = products
     .filter((item) => item.category === product.category && item.id !== product.id)
     .slice(0, 2)
 
@@ -66,7 +85,9 @@ function ProductDetailPage() {
 
           <div className="product-price-row detail-price">
             <strong>{formatCurrency(product.price)}</strong>
-            <span>{formatCurrency(product.originalPrice)}</span>
+            {Number(product.originalPrice) > Number(product.price) ? (
+              <span>{formatCurrency(product.originalPrice)}</span>
+            ) : null}
           </div>
 
           <p className="muted">

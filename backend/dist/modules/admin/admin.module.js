@@ -9,7 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const admin_guard_1 = require("../auth/guards/admin.guard");
 const customer_entity_1 = require("../auth/entities/customer.entity");
+const product_entity_1 = require("../products/entities/product.entity");
 const admin_controller_1 = require("./admin.controller");
 const admin_service_1 = require("./admin.service");
 let AdminModule = class AdminModule {
@@ -17,9 +19,9 @@ let AdminModule = class AdminModule {
 exports.AdminModule = AdminModule;
 exports.AdminModule = AdminModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([customer_entity_1.Customer])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([customer_entity_1.Customer, product_entity_1.Product])],
         controllers: [admin_controller_1.AdminController],
-        providers: [admin_service_1.AdminService],
+        providers: [admin_service_1.AdminService, admin_guard_1.AdminGuard],
     })
 ], AdminModule);
 //# sourceMappingURL=admin.module.js.map

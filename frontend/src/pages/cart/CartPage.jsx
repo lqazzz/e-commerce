@@ -1,14 +1,15 @@
 import { Link } from 'react-router-dom'
-import { mockProducts } from '../../constants/mockProducts'
 import { useCart } from '../../context/CartContext'
+import { useProductsCatalog } from '../../hooks/useProductsCatalog'
 import { formatCurrency } from '../../utils/currency'
 
 function CartPage() {
   const { items, updateQuantity, removeFromCart } = useCart()
+  const { products, isLoading, error } = useProductsCatalog()
 
   const cartLines = items
     .map((line) => {
-      const product = mockProducts.find((item) => item.id === line.productId)
+      const product = products.find((item) => item.id === line.productId)
 
       if (!product) {
         return null
@@ -38,6 +39,9 @@ function CartPage() {
           </div>
           <Link to="/products">Continue shopping</Link>
         </div>
+
+        {isLoading ? <p className="muted">Loading cart products...</p> : null}
+        {error ? <p className="auth-error">{error}</p> : null}
 
         {cartLines.length > 0 ? (
           <div className="cart-lines">

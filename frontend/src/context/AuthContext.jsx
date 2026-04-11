@@ -53,6 +53,29 @@ export function AuthProvider({ children }) {
       })
   }, [])
 
+  useEffect(() => {
+    if (!token || !customer || customer.role) {
+      return
+    }
+
+    getCurrentCustomer(token)
+      .then((profile) => {
+        setCustomer(profile)
+        localStorage.setItem(
+          AUTH_STORAGE_KEY,
+          JSON.stringify({
+            accessToken: token,
+            customer: profile,
+          }),
+        )
+      })
+      .catch(() => {
+        localStorage.removeItem(AUTH_STORAGE_KEY)
+        setToken(null)
+        setCustomer(null)
+      })
+  }, [token, customer])
+
   const persistAuth = (authData) => {
     localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(authData))
     setToken(authData.accessToken)
@@ -117,6 +140,7 @@ export function AuthProvider({ children }) {
       customer,
       isLoading,
       isAuthenticated: Boolean(token),
+      isAdmin: customer?.role === 'admin',
       login,
       register,
       refreshProfile,

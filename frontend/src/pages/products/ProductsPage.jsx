@@ -1,9 +1,10 @@
 import ProductCard from '../../components/common/ProductCard'
-import { mockProducts } from '../../constants/mockProducts'
-
-const categories = ['All', ...new Set(mockProducts.map((item) => item.category))]
+import { useProductsCatalog } from '../../hooks/useProductsCatalog'
 
 function ProductsPage() {
+  const { products, isLoading, error } = useProductsCatalog()
+  const categories = ['All', ...new Set(products.map((item) => item.category))]
+
   return (
     <div className="products-layout page-stack">
       <section className="surface-section products-filter-panel reveal-up">
@@ -29,7 +30,7 @@ function ProductsPage() {
         <div className="section-head">
           <div>
             <h2>Product list</h2>
-            <p className="muted">{mockProducts.length} items found</p>
+            <p className="muted">{products.length} items found</p>
           </div>
           <div className="toolbar">
             <button className="button button-ghost" type="button">
@@ -44,11 +45,20 @@ function ProductsPage() {
           </div>
         </div>
 
-        <div className="product-grid">
-          {mockProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {isLoading ? <p className="muted">Loading products...</p> : null}
+        {error ? <p className="auth-error">{error}</p> : null}
+
+        {!isLoading && !error ? (
+          products.length > 0 ? (
+            <div className="product-grid">
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <p className="muted">No products available yet.</p>
+          )
+        ) : null}
       </section>
     </div>
   )
